@@ -15,5 +15,11 @@ Create Elm apps with type-safe port communication.
   ```bash
   npm start
   ```
+  Load http://localhost:8080/
 
-4. Load `http://localhost:8080/`
+  -- OR --
+
+  Bundle files for production:
+  ```bash
+  npm run build # transpiles all your Elm and ts into dist/bundle.js
+  ```
