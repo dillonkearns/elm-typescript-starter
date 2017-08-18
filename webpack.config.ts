@@ -1,7 +1,7 @@
 import * as webpack from 'webpack'
 import * as path from 'path'
 
-module.exports = function(env: string): webpack.Configuration {
+module.exports = function(env: any): webpack.Configuration {
   return {
     entry: './index.ts',
     output: {
@@ -14,9 +14,10 @@ module.exports = function(env: string): webpack.Configuration {
           test: [/\.elm$/],
           exclude: [/elm-stuff/, /node_modules/],
           use: [
+            { loader: 'elm-hot-loader' },
             {
               loader: 'elm-webpack-loader',
-              options: { debug: true, warn: true }
+              options: env && env.production ? {} : { debug: true, warn: true }
             }
           ]
         },
