@@ -8,6 +8,7 @@
     "@types/node": "^8.0.20",
     "@types/webpack": "^3.0.8",
     "elm-hot-loader": "^0.5.4",
+    "elm-typescript-interop": "0.0.1",
     "elm-webpack-loader": "^4.3.1",
     "ts-loader": "^2.3.2",
     "ts-node": "^3.3.0",
@@ -16,10 +17,10 @@
     "webpack-dev-server": "^2.7.1"
   },
   "scripts": {
-    "start": "npm run elm-typescript && webpack-dev-server --hot",
+    "start": "npm run elm-typescript-interop && webpack-dev-server --hot",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "elm-typescript": "elm-typescript src/Main.elm --output=src/Main/index.d.ts",
-    "build": "npm run elm-typescript && webpack -p"
+    "elm-typescript-interop": "elm-typescript-interop src/Main.elm --output=src/Main/index.d.ts",
+    "build": "npm run elm-typescript-interop && webpack -p"
   },
   "keywords": [],
   "author": "",
