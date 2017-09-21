@@ -1,25 +1,26 @@
 {
-  "name": "custom-elm-hmr",
+  "name": "elm-typescript-starter",
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "^8.0.20",
-    "@types/webpack": "^3.0.8",
+    "@types/node": "^8.0.28",
+    "@types/webpack": "^3.0.11",
     "elm-hot-loader": "^0.5.4",
     "elm-typescript-interop": "0.0.1",
     "elm-webpack-loader": "^4.3.1",
-    "ts-loader": "^2.3.2",
+    "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
-    "typescript": "^2.4.2",
-    "webpack": "^3.5.4",
-    "webpack-dev-server": "^2.7.1"
+    "typescript": "^2.5.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2"
   },
   "scripts": {
     "start": "npm run elm-typescript-interop && webpack-dev-server --hot",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "elm-typescript-interop": "elm-typescript-interop src/Main.elm --output=src/Main/index.d.ts",
+    "elm-typescript-interop":
+      "elm-typescript-interop src/Main.elm --output=src/Main/index.d.ts",
     "build": "npm run elm-typescript-interop && webpack -p"
   },
   "keywords": [],
