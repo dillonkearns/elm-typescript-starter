@@ -17,6 +17,6 @@ export interface App {
     
 
 export namespace Main {
-  export function fullscreen(flags: { location: { city: string; state: string }; temperature: { degrees: number; fahrenheit: boolean } }): App
-  export function embed(node: HTMLElement | null, flags: { location: { city: string; state: string }; temperature: { degrees: number; fahrenheit: boolean } }): App
+  export function fullscreen(): App
+  export function embed(node: HTMLElement | null): App
 }
