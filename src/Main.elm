@@ -10,8 +10,13 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> reply ReplyReceived
+        , subscriptions = subscriptions
         }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    reply ReplyReceived
 
 
 type alias Model =
