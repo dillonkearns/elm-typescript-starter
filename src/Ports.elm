@@ -1,22 +1,21 @@
 port module Ports exposing
-    ( MsgFromBrowserStorage(..)
-    , MsgToBrowserStorage(..)
-    , localStorageSubscription
+    ( localStorageSubscription
     , storeItem
     )
 
 import Json.Decode
 import Json.Encode
+import PortTypes
 
 
-storeItem : MsgToBrowserStorage -> Cmd msg
+storeItem : PortTypes.MsgToBrowserStorage -> Cmd msg
 storeItem msgToBrowserStorage =
     msgToBrowserStorage
         |> convertToTsRecord
         |> localStorageFromElm
 
 
-localStorageSubscription : (MsgFromBrowserStorage -> msg) -> Sub msg
+localStorageSubscription : (PortTypes.MsgFromBrowserStorage -> msg) -> Sub msg
 localStorageSubscription customTypeConstructor =
     (Json.Decode.decodeValue fromLocalStorageInToCustomType
         >> Result.withDefault defaultThing
@@ -25,12 +24,12 @@ localStorageSubscription customTypeConstructor =
         |> localStorageToElm
 
 
-defaultThing : MsgFromBrowserStorage
+defaultThing : PortTypes.MsgFromBrowserStorage
 defaultThing =
     -- TODO since TypeScript has escape hatches for its type system, maybe the user
     -- should handle errors? Or at least have a flag to choose to handle errors
     -- with their generated code in the CLI?
-    LoadedItem
+    PortTypes.LoadedItem
         { key = ""
         , item = Json.Encode.null
         }
@@ -42,48 +41,38 @@ type alias LoadedItemRecord =
     }
 
 
-fromLocalStorageInToCustomType : Json.Decode.Decoder MsgFromBrowserStorage
+fromLocalStorageInToCustomType : Json.Decode.Decoder PortTypes.MsgFromBrowserStorage
 fromLocalStorageInToCustomType =
     Json.Decode.map2 LoadedItemRecord
         (Json.Decode.field "key" Json.Decode.string)
         (Json.Decode.field "item" Json.Decode.value)
-        |> Json.Decode.map LoadedItem
+        |> Json.Decode.map PortTypes.LoadedItem
 
 
-convertToTsRecord : MsgToBrowserStorage -> Json.Encode.Value
+convertToTsRecord : PortTypes.MsgToBrowserStorage -> Json.Encode.Value
 convertToTsRecord msgToBrowserStorage =
     case msgToBrowserStorage of
-        StoreItem { key, item } ->
+        PortTypes.StoreItem { key, item } ->
             Json.Encode.object
                 [ ( "kind", Json.Encode.string "StoreItem" )
                 , ( "key", Json.Encode.string key )
                 , ( "item", item )
                 ]
 
-        LoadItem { key } ->
+        PortTypes.LoadItem { key } ->
             Json.Encode.object
                 [ ( "kind", Json.Encode.string "LoadItem" )
                 , ( "key", Json.Encode.string key )
                 ]
 
-        ClearItem { key } ->
+        PortTypes.ClearItem { key } ->
             Json.Encode.object
                 [ ( "kind", Json.Encode.string "ClearItem" )
                 , ( "key", Json.Encode.string key )
                 ]
 
 
-type MsgToBrowserStorage
-    = StoreItem { key : String, item : Json.Encode.Value }
-    | LoadItem { key : String }
-    | ClearItem { key : String }
-
-
 port localStorageFromElm : Json.Encode.Value -> Cmd msg
 
 
 port localStorageToElm : (Json.Decode.Value -> msg) -> Sub msg
-
-
-type MsgFromBrowserStorage
-    = LoadedItem { key : String, item : Json.Encode.Value }

@@ -3,6 +3,7 @@ port module Main exposing (main)
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 import Json.Encode
+import PortTypes
 import Ports
 
 
@@ -20,8 +21,16 @@ init : ( Model, Cmd Msg )
 init =
     ( 0
     , Cmd.batch
-        [ Ports.storeItem (Ports.StoreItem { key = "my-key", item = Json.Encode.int 123456 })
-        , Ports.storeItem (Ports.LoadItem { key = "my-key" })
+        [ Ports.storeItem
+            (PortTypes.StoreItem
+                { key = "my-key"
+                , item = Json.Encode.int 123456
+                }
+            )
+        , Ports.storeItem
+            (PortTypes.LoadItem
+                { key = "my-key" }
+            )
         ]
     )
 
@@ -30,7 +39,7 @@ type Msg
     = Increment
     | Decrement
     | ReplyReceived Int
-    | GotLocalStorage Ports.MsgFromBrowserStorage
+    | GotLocalStorage PortTypes.MsgFromBrowserStorage
 
 
 view : Model -> Html Msg
