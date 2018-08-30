@@ -48,7 +48,7 @@ export interface App {
       subscribe(callback: (data: MsgToBrowserStorage) => void): void;
     };
     localStorageToElm: {
-      send(data: number): void;
+      send(data: { key: string; item: JSON }): void;
     };
   };
 }

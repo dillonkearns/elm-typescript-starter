@@ -20,8 +20,8 @@ init : ( Model, Cmd Msg )
 init =
     ( 0
     , Cmd.batch
-        [ hello "World"
-        , Ports.storeItem (Ports.StoreItem { key = "some-key", item = Json.Encode.null })
+        [ Ports.storeItem (Ports.StoreItem { key = "my-key", item = Json.Encode.int 123456 })
+        , Ports.storeItem (Ports.LoadItem { key = "my-key" })
         ]
     )
 
@@ -30,6 +30,7 @@ type Msg
     = Increment
     | Decrement
     | ReplyReceived Int
+    | GotLocalStorage Ports.MsgFromBrowserStorage
 
 
 view : Model -> Html Msg
@@ -57,10 +58,20 @@ update msg model =
             in
             ( model, Cmd.none )
 
+        GotLocalStorage thing ->
+            let
+                _ =
+                    Debug.log "got local storage" thing
+            in
+            ( model, Cmd.none )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    reply ReplyReceived
+    Sub.batch
+        [ reply ReplyReceived
+        , Ports.localStorageSubscription GotLocalStorage
+        ]
 
 
 main : Program Never Model Msg
