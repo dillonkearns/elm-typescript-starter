@@ -2,6 +2,8 @@ port module Main exposing (main)
 
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Json.Encode
+import Ports
 
 
 port hello : String -> Cmd msg
@@ -16,7 +18,12 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( 0, hello "World" )
+    ( 0
+    , Cmd.batch
+        [ hello "World"
+        , Ports.storeItem (Ports.StoreItem { key = "some-key", item = Json.Encode.null })
+        ]
+    )
 
 
 type Msg
