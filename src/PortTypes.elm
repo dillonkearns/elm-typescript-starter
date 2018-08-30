@@ -1,16 +1,16 @@
 module PortTypes exposing
-    ( MsgFromBrowserStorage(..)
-    , MsgToBrowserStorage(..)
+    ( LocalStorageFromElm(..)
+    , LocalStorageToElm(..)
     )
 
 import Json.Encode
 
 
-type MsgToBrowserStorage
+type LocalStorageFromElm
     = StoreItem { key : String, item : Json.Encode.Value }
     | LoadItem { key : String }
     | ClearItem { key : String }
 
 
-type MsgFromBrowserStorage
+type LocalStorageToElm
     = LoadedItem { key : String, item : Json.Encode.Value }

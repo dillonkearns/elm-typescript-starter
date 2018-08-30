@@ -4,7 +4,7 @@
 export as namespace Elm;
 
 /*
-type MsgToBrowserStorage
+type LocalStorageFromElm
     = StoreItem { key : String, item : Json.Encode.Value }
     | LoadItem { key : String }
     | ClearItem { key : String }
@@ -29,10 +29,10 @@ export interface ClearItem {
   key: string;
 }
 
-export type MsgToBrowserStorage = StoreItem | LoadItem | ClearItem;
+export type LocalStorageFromElm = StoreItem | LoadItem | ClearItem;
 
 /*
-type MsgFromBrowserStorage
+type LocalStorageToElm
     = LoadedItem { key : String, item : Json.Encode.Value }
 */
 
@@ -45,7 +45,7 @@ export interface App {
       send(data: number): void;
     };
     localStorageFromElm: {
-      subscribe(callback: (data: MsgToBrowserStorage) => void): void;
+      subscribe(callback: (data: LocalStorageFromElm) => void): void;
     };
     localStorageToElm: {
       send(data: { key: string; item: JSON }): void;

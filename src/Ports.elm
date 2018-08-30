@@ -8,14 +8,14 @@ import Json.Encode
 import PortTypes
 
 
-storeItem : PortTypes.MsgToBrowserStorage -> Cmd msg
+storeItem : PortTypes.LocalStorageFromElm -> Cmd msg
 storeItem msgToBrowserStorage =
     msgToBrowserStorage
         |> convertToTsRecord
         |> localStorageFromElm
 
 
-localStorageSubscription : (PortTypes.MsgFromBrowserStorage -> msg) -> Sub msg
+localStorageSubscription : (PortTypes.LocalStorageToElm -> msg) -> Sub msg
 localStorageSubscription customTypeConstructor =
     (Json.Decode.decodeValue fromLocalStorageInToCustomType
         >> Result.withDefault defaultThing
@@ -24,7 +24,7 @@ localStorageSubscription customTypeConstructor =
         |> localStorageToElm
 
 
-defaultThing : PortTypes.MsgFromBrowserStorage
+defaultThing : PortTypes.LocalStorageToElm
 defaultThing =
     -- TODO since TypeScript has escape hatches for its type system, maybe the user
     -- should handle errors? Or at least have a flag to choose to handle errors
@@ -41,7 +41,7 @@ type alias LoadedItemRecord =
     }
 
 
-fromLocalStorageInToCustomType : Json.Decode.Decoder PortTypes.MsgFromBrowserStorage
+fromLocalStorageInToCustomType : Json.Decode.Decoder PortTypes.LocalStorageToElm
 fromLocalStorageInToCustomType =
     Json.Decode.map2 LoadedItemRecord
         (Json.Decode.field "key" Json.Decode.string)
@@ -49,7 +49,7 @@ fromLocalStorageInToCustomType =
         |> Json.Decode.map PortTypes.LoadedItem
 
 
-convertToTsRecord : PortTypes.MsgToBrowserStorage -> Json.Encode.Value
+convertToTsRecord : PortTypes.LocalStorageFromElm -> Json.Encode.Value
 convertToTsRecord msgToBrowserStorage =
     case msgToBrowserStorage of
         PortTypes.StoreItem { key, item } ->

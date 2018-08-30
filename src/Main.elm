@@ -39,7 +39,7 @@ type Msg
     = Increment
     | Decrement
     | ReplyReceived Int
-    | GotLocalStorage PortTypes.MsgFromBrowserStorage
+    | GotLocalStorage PortTypes.LocalStorageToElm
 
 
 view : Model -> Html Msg
