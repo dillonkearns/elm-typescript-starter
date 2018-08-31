@@ -4,6 +4,26 @@
 export as namespace Elm;
 
 /*
+type UniversalAnalyticsFromElm
+    = TrackEvent { category : String, action : String, label : Maybe String, value : Maybe Int }
+    | TrackPage { path : String }
+*/
+
+export interface TrackEvent {
+  kind: "TrackEvent";
+  category: string;
+  action: string;
+  label: string | null;
+  value: number | null;
+}
+
+export interface TrackPage {
+  kind: "TrackPage";
+  path: string;
+}
+
+export type UniversalAnalyticsFromElm = TrackEvent | TrackPage;
+/*
 type LocalStorageFromElm
     = StoreItem { key : String, item : Json.Encode.Value }
     | LoadItem { key : String }
@@ -47,6 +67,10 @@ export interface App {
     localStorageFromElm: {
       subscribe(callback: (data: LocalStorageFromElm) => void): void;
     };
+    universalAnalyticsFromElm: {
+      subscribe(callback: (data: UniversalAnalyticsFromElm) => void): void;
+    };
+
     localStorageToElm: {
       send(data: { key: string; item: JSON }): void;
     };

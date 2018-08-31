@@ -1,10 +1,12 @@
 port module Ports exposing
     ( localStorageSubscription
+    , sendUniversalAnalyticsFromElm
     , storeItem
     )
 
 import Json.Decode
 import Json.Encode
+import Json.Encode.Extra
 import PortTypes
 
 
@@ -76,3 +78,31 @@ port localStorageFromElm : Json.Encode.Value -> Cmd msg
 
 
 port localStorageToElm : (Json.Decode.Value -> msg) -> Sub msg
+
+
+port universalAnalyticsFromElm : Json.Encode.Value -> Cmd msg
+
+
+sendUniversalAnalyticsFromElm : PortTypes.UniversalAnalyticsFromElm -> Cmd msg
+sendUniversalAnalyticsFromElm portData =
+    portData
+        |> convertUaToTsRecord
+        |> universalAnalyticsFromElm
+
+
+convertUaToTsRecord : PortTypes.UniversalAnalyticsFromElm -> Json.Encode.Value
+convertUaToTsRecord portData =
+    case portData of
+        PortTypes.TrackEvent data ->
+            Json.Encode.object
+                [ ( "kind", Json.Encode.string "TrackEvent" )
+                , ( "category", Json.Encode.string data.category )
+                , ( "action", Json.Encode.string data.action )
+                , ( "label", Json.Encode.Extra.maybe Json.Encode.string data.label )
+                ]
+
+        PortTypes.TrackPage data ->
+            Json.Encode.object
+                [ ( "kind", Json.Encode.string "TrackPage" )
+                , ( "category", Json.Encode.string data.path )
+                ]

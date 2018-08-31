@@ -31,6 +31,7 @@ init =
             (PortTypes.LoadItem
                 { key = "my-key" }
             )
+        , Ports.sendUniversalAnalyticsFromElm (PortTypes.TrackPage { path = "/" })
         ]
     )
 

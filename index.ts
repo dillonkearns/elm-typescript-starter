@@ -27,3 +27,22 @@ app.ports.localStorageFromElm.subscribe(data => {
     assertNever(data);
   }
 });
+
+app.ports.universalAnalyticsFromElm.subscribe(data => {
+  if (data.kind === "TrackPage") {
+    console.log("TrackPage!", data);
+    // ... some Google Analytics track page code here,
+    // could look something like
+    // https://github.com/dillonkearns/mobster/blob/2ad66f514579a09a9679b75b6c1b2956e7879b46/typescript/analytics.ts#L46-L48
+  } else if (data.kind === "TrackEvent") {
+    console.log("TrackEvent!", data);
+    // ... some Google Analytics track event code here,
+    // could look something like
+    // https://github.com/dillonkearns/mobster/blob/2ad66f514579a09a9679b75b6c1b2956e7879b46/typescript/analytics.ts#L50-L53
+  } else {
+    assertNever(data);
+  }
+});
+
+// And you'd probably have some Google Analytics setup code here, something like
+// https://github.com/dillonkearns/mobster/blob/2ad66f514579a09a9679b75b6c1b2956e7879b46/typescript/analytics.ts#L23-L40

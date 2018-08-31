@@ -17,7 +17,7 @@
     "webpack-dev-server": "^2.11.3"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --hot --open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "elm-typescript-interop": "elm-typescript-interop src/Main.elm --output=src/Main/index.d.ts",
     "build": "npm run elm-typescript-interop && webpack -p"
