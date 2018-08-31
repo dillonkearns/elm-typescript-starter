@@ -1,7 +1,7 @@
 port module Ports exposing
-    ( localStorageSubscription
-    , sendGoogleAnalyticsFromElm
-    , storeItem
+    ( googleAnalytics
+    , localStorage
+    , localStorageSubscription
     )
 
 import Json.Decode
@@ -11,8 +11,8 @@ import Ports.GoogleAnalytics
 import Ports.LocalStorage
 
 
-storeItem : Ports.LocalStorage.FromElm -> Cmd msg
-storeItem msgToBrowserStorage =
+localStorage : Ports.LocalStorage.FromElm -> Cmd msg
+localStorage msgToBrowserStorage =
     msgToBrowserStorage
         |> convertToTsRecord
         |> localStorageFromElm
@@ -84,8 +84,8 @@ port localStorageToElm : (Json.Decode.Value -> msg) -> Sub msg
 port googleAnalyticsFromElm : Json.Encode.Value -> Cmd msg
 
 
-sendGoogleAnalyticsFromElm : Ports.GoogleAnalytics.FromElm -> Cmd msg
-sendGoogleAnalyticsFromElm portData =
+googleAnalytics : Ports.GoogleAnalytics.FromElm -> Cmd msg
+googleAnalytics portData =
     portData
         |> convertUaToTsRecord
         |> googleAnalyticsFromElm

@@ -21,17 +21,14 @@ init : ( Model, Cmd Msg )
 init =
     ( ()
     , Cmd.batch
-        [ Ports.storeItem
+        [ Ports.localStorage
             (Ports.LocalStorage.StoreItem
                 { key = "my-key"
                 , item = Json.Encode.int 123456
                 }
             )
-        , Ports.storeItem
-            (Ports.LocalStorage.LoadItem
-                { key = "my-key" }
-            )
-        , Ports.sendGoogleAnalyticsFromElm (Ports.GoogleAnalytics.TrackPage { path = "/" })
+        , Ports.localStorage (Ports.LocalStorage.LoadItem { key = "my-key" })
+        , Ports.googleAnalytics (Ports.GoogleAnalytics.TrackPage { path = "/" })
         ]
     )
 
