@@ -4,7 +4,7 @@
 export as namespace Elm;
 
 /*
-type UniversalAnalyticsFromElm
+type GoogleAnalyticsFromElm
     = TrackEvent { category : String, action : String, label : Maybe String, value : Maybe Int }
     | TrackPage { path : String }
 */
@@ -22,7 +22,7 @@ export interface TrackPage {
   path: string;
 }
 
-export type UniversalAnalyticsFromElm = TrackEvent | TrackPage;
+export type GoogleAnalyticsFromElm = TrackEvent | TrackPage;
 /*
 type LocalStorageFromElm
     = StoreItem { key : String, item : Json.Encode.Value }
@@ -67,8 +67,8 @@ export interface App {
     localStorageFromElm: {
       subscribe(callback: (data: LocalStorageFromElm) => void): void;
     };
-    universalAnalyticsFromElm: {
-      subscribe(callback: (data: UniversalAnalyticsFromElm) => void): void;
+    googleAnalyticsFromElm: {
+      subscribe(callback: (data: GoogleAnalyticsFromElm) => void): void;
     };
 
     localStorageToElm: {

@@ -2,8 +2,9 @@ port module Main exposing (main)
 
 import Html exposing (Html, button, div, text)
 import Json.Encode
-import PortTypes
 import Ports
+import Ports.GoogleAnalytics
+import Ports.LocalStorage
 
 
 port hello : String -> Cmd msg
@@ -21,23 +22,23 @@ init =
     ( ()
     , Cmd.batch
         [ Ports.storeItem
-            (PortTypes.StoreItem
+            (Ports.LocalStorage.StoreItem
                 { key = "my-key"
                 , item = Json.Encode.int 123456
                 }
             )
         , Ports.storeItem
-            (PortTypes.LoadItem
+            (Ports.LocalStorage.LoadItem
                 { key = "my-key" }
             )
-        , Ports.sendUniversalAnalyticsFromElm (PortTypes.TrackPage { path = "/" })
+        , Ports.sendGoogleAnalyticsFromElm (Ports.GoogleAnalytics.TrackPage { path = "/" })
         ]
     )
 
 
 type Msg
     = ReplyReceived Int
-    | GotLocalStorage PortTypes.LocalStorageToElm
+    | GotLocalStorage Ports.LocalStorage.ToElm
 
 
 view : Model -> Html Msg

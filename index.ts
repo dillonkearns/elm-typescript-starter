@@ -28,7 +28,7 @@ app.ports.localStorageFromElm.subscribe(data => {
   }
 });
 
-app.ports.universalAnalyticsFromElm.subscribe(data => {
+app.ports.googleAnalyticsFromElm.subscribe(data => {
   if (data.kind === "TrackPage") {
     console.log("TrackPage!", data);
     // ... some Google Analytics track page code here,
