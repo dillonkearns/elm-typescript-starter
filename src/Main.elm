@@ -1,7 +1,6 @@
 port module Main exposing (main)
 
 import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
 import Json.Encode
 import PortTypes
 import Ports
@@ -14,12 +13,12 @@ port reply : (Int -> msg) -> Sub msg
 
 
 type alias Model =
-    Int
+    ()
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( 0
+    ( ()
     , Cmd.batch
         [ Ports.storeItem
             (PortTypes.StoreItem
@@ -37,30 +36,18 @@ init =
 
 
 type Msg
-    = Increment
-    | Decrement
-    | ReplyReceived Int
+    = ReplyReceived Int
     | GotLocalStorage PortTypes.LocalStorageToElm
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ button [ onClick Decrement ] [ text "---" ]
-        , div [] [ text (toString model) ]
-        , button [ onClick Increment ] [ text "+++" ]
-        ]
+    div [] []
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Increment ->
-            ( model + 1, Cmd.none )
-
-        Decrement ->
-            ( model - 1, Cmd.none )
-
         ReplyReceived message ->
             let
                 _ =
@@ -71,7 +58,7 @@ update msg model =
         GotLocalStorage thing ->
             let
                 _ =
-                    Debug.log "got local storage" thing
+                    Debug.log "GotLocalStorage" thing
             in
             ( model, Cmd.none )
 
