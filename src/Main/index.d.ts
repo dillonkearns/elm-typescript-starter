@@ -2,19 +2,22 @@
 // https://github.com/dillonkearns/elm-typescript-interop
 // Type definitions for Elm ports
 
-export interface App {
-  ports: {
-    hello: {
-      subscribe(callback: (data: string) => void): void;
-    };
-    reply: {
-      send(data: number): void;
-    };
-  };
-}
-
 export namespace Elm {
-  export namespace Main {
-    export function init(options: { node: HTMLElement; flags: null }): App;
+  namespace Main {
+    interface App {
+      ports: {
+        hello: {
+          subscribe(callback: (data: string) => void): void;
+        };
+        reply: {
+          send(data: number): void;
+        };
+      };
+    }
+
+    export function init(options: {
+      node?: HTMLElement | null;
+      flags: null;
+    }): Elm.Main.App;
   }
 }

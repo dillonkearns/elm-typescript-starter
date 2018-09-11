@@ -30,13 +30,15 @@ type Msg
     | ReplyReceived Int
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    div []
+    { body =
         [ button [ onClick Decrement ] [ text "---" ]
         , div [] [ text (Debug.toString model) ]
         , button [ onClick Increment ] [ text "+++" ]
         ]
+    , title = "TypeScript Interop Boilerplate"
+    }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -63,7 +65,7 @@ subscriptions model =
 
 main : Program Flags Model Msg
 main =
-    Browser.element
+    Browser.document
         { init = init
         , view = view
         , update = update
