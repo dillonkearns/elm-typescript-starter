@@ -1,5 +1,6 @@
 port module Main exposing (main)
 
+import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
@@ -14,8 +15,12 @@ type alias Model =
     Int
 
 
-init : ( Model, Cmd Msg )
-init =
+type alias Flags =
+    ()
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( 0, hello "World" )
 
 
@@ -29,7 +34,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick Decrement ] [ text "---" ]
-        , div [] [ text (toString model) ]
+        , div [] [ text (Debug.toString model) ]
         , button [ onClick Increment ] [ text "+++" ]
         ]
 
@@ -56,9 +61,9 @@ subscriptions model =
     reply ReplyReceived
 
 
-main : Program Never Model Msg
+main : Program Flags Model Msg
 main =
-    Html.program
+    Browser.element
         { init = init
         , view = view
         , update = update

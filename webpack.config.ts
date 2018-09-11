@@ -14,10 +14,11 @@ module.exports = function(env: any): webpack.Configuration {
           test: [/\.elm$/],
           exclude: [/elm-stuff/, /node_modules/],
           use: [
-            { loader: "elm-hot-loader" },
+            { loader: "elm-hot-webpack-loader" },
             {
               loader: "elm-webpack-loader",
-              options: env && env.production ? {} : { debug: true, warn: true }
+              options:
+                env && env.production ? {} : { debug: true, forceWatch: true }
             }
           ]
         },

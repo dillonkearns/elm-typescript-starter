@@ -6,11 +6,12 @@
   "dependencies": {},
   "devDependencies": {
     "webpack-cli": "^3.1.0",
-    "@types/node": "^8.10.29",
-    "@types/webpack": "^3.8.14",
-    "elm-hot-loader": "^0.5.4",
+    "@types/node": "^10.9.4",
+    "@types/webpack": "^4.4.11",
+    "elm-hot-webpack-loader": "^0.9.2",
     "elm-typescript-interop": "0.0.1",
-    "elm-webpack-loader": "^4.5.0",
+    "elm-webpack-loader": "^5.0.0",
+    "elm": "^0.19.0",
     "ts-loader": "^5.1.0",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3",
@@ -18,7 +19,7 @@
     "webpack-dev-server": "^3.1.8"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --hot --open",
     "test": "echo \"Error: no test specified\" && exit 1",
     "elm-typescript-interop": "elm-typescript-interop src/Main.elm --output=src/Main/index.d.ts",
     "build": "npm run elm-typescript-interop && webpack -p"
