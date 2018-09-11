@@ -1,31 +1,31 @@
-import * as webpack from 'webpack'
-import * as path from 'path'
+import * as webpack from "webpack";
+import * as path from "path";
 
 module.exports = function(env: any): webpack.Configuration {
   return {
-    entry: './index.ts',
+    entry: "./index.ts",
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'bundle.js'
+      path: path.resolve(__dirname, "dist"),
+      filename: "bundle.js"
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: [/\.elm$/],
           exclude: [/elm-stuff/, /node_modules/],
           use: [
-            { loader: 'elm-hot-loader' },
+            { loader: "elm-hot-loader" },
             {
-              loader: 'elm-webpack-loader',
+              loader: "elm-webpack-loader",
               options: env && env.production ? {} : { debug: true, warn: true }
             }
           ]
         },
-        { test: /\.ts$/, loader: 'ts-loader' }
+        { test: /\.ts$/, loader: "ts-loader" }
       ]
     },
     resolve: {
-      extensions: ['.js', '.ts', '.elm']
+      extensions: [".js", ".ts", ".elm"]
     }
-  }
-}
+  };
+};
