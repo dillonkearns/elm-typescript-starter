@@ -9,7 +9,7 @@
     "@types/node": "^10.9.4",
     "@types/webpack": "^4.4.11",
     "elm-hot-webpack-loader": "^0.9.2",
-    "elm-typescript-interop": "0.0.1",
+    "elm-typescript-interop": "0.0.6",
     "elm-webpack-loader": "^5.0.0",
     "elm": "^0.19.0",
     "ts-loader": "^5.1.0",
@@ -19,9 +19,8 @@
     "webpack-dev-server": "^3.1.8"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --open",
+    "start": "elm-typescript-interop && webpack-dev-server --hot --open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "elm-typescript-interop": "elm-typescript-interop src/Main.elm --output=src/Main/index.d.ts",
     "build": "npm run elm-typescript-interop && webpack -p"
   },
   "keywords": [],
