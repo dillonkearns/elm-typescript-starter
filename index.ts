@@ -4,6 +4,18 @@ document.addEventListener("DOMContentLoaded", function() {
   let app = Elm.Main.init({
     flags: null
   });
-  app.ports.hello.subscribe(name => console.log(`Hello ${name}!!`));
-  app.ports.reply.send(12345);
+  console.log(app);
+
+  app.ports.lookItemUp.subscribe(key => {
+    console.log("@@@lookItemUp", key);
+    const lookupResult = localStorage.getItem(key);
+    if (lookupResult === null) {
+      app.ports.storageItemNotFound.send({ key: key });
+    } else {
+      app.ports.storageItemFound.send({
+        key: key,
+        value: JSON.parse(lookupResult)
+      });
+    }
+  });
 });

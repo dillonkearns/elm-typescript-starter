@@ -1,8 +1,10 @@
 port module Main exposing (main)
 
 import Browser
-import Html exposing (Html, button, div, text)
+import Html exposing (Html, button, div, input, text)
+import Html.Attributes exposing (value)
 import Html.Events exposing (onClick)
+import LocalStorage
 
 
 port hello : String -> Cmd msg
@@ -12,7 +14,9 @@ port reply : (Int -> msg) -> Sub msg
 
 
 type alias Model =
-    Int
+    { itemKey : String
+    , itemValue : String
+    }
 
 
 type alias Flags =
@@ -21,46 +25,61 @@ type alias Flags =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( 0, hello "World" )
+    ( { itemKey = "name"
+      , itemValue = "Spock"
+      }
+    , LocalStorage.lookItemUp "foo"
+    )
 
 
 type Msg
-    = Increment
-    | Decrement
-    | ReplyReceived Int
+    = LocalStorageLookup LocalStorage.LoadResult
+    | ItemKeyInput String
+    | ItemValueInput String
 
 
 view : Model -> Browser.Document Msg
 view model =
     { body =
-        [ button [ onClick Decrement ] [ text "---" ]
-        , div [] [ text (Debug.toString model) ]
-        , button [ onClick Increment ] [ text "+++" ]
+        [ labeledInput model.itemKey ItemKeyInput "Key"
+        , labeledInput model.itemValue ItemValueInput "Value"
         ]
-    , title = "TypeScript Interop Boilerplate"
+    , title = "elm-typescript-interop demo"
     }
+
+
+labeledInput inputValue msgConstructor label =
+    div []
+        [ text label
+        , input [ value inputValue, Html.Events.onInput msgConstructor ] []
+        ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Increment ->
-            ( model + 1, Cmd.none )
-
-        Decrement ->
-            ( model - 1, Cmd.none )
-
-        ReplyReceived message ->
+        LocalStorageLookup loadResult ->
             let
                 _ =
-                    Debug.log "ReplyReceived" message
+                    case loadResult |> Debug.log "loadResult" of
+                        LocalStorage.Found { key, value } ->
+                            value |> Debug.toString |> Debug.log "found item"
+
+                        LocalStorage.NotFound { key } ->
+                            key |> Debug.log "Couldn't find item"
             in
             ( model, Cmd.none )
+
+        ItemKeyInput newItemKey ->
+            ( { model | itemKey = newItemKey }, Cmd.none )
+
+        ItemValueInput newItemValue ->
+            ( { model | itemValue = newItemValue }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    reply ReplyReceived
+    LocalStorage.itemLookup |> Sub.map LocalStorageLookup
 
 
 main : Program Flags Model Msg

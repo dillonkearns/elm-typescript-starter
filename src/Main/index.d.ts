@@ -6,14 +6,26 @@ export namespace Elm {
   namespace Main {
     export interface App {
       ports: {
+        storageStoreItem: {
+          subscribe(callback: (data: { key: string; value: unknown }) => void): void
+        }
+        lookItemUp: {
+          subscribe(callback: (data: string) => void): void
+        }
+        storageItemFound: {
+          send(data: { key: string; value: unknown }): void
+        }
+        storageItemNotFound: {
+          send(data: { key: string }): void
+        }
         hello: {
           subscribe(callback: (data: string) => void): void
         }
         reply: {
           send(data: number): void
         }
-        jsonPort: {
-          subscribe(callback: (data: unknown) => void): void
+        something: {
+          subscribe(callback: (data: string) => void): void
         }
       };
     }
