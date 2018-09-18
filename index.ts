@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", function() {
   });
   console.log(app);
 
+  app.ports.storageStoreItem.subscribe(thing => {
+    console.log("setting to...", JSON.stringify(thing));
+    localStorage.setItem(thing.key, JSON.stringify(thing.value));
+  });
+
   app.ports.lookItemUp.subscribe(key => {
     console.log("@@@lookItemUp", key);
     const lookupResult = localStorage.getItem(key);
