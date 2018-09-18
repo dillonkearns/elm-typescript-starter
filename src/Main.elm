@@ -5,7 +5,6 @@ import Html exposing (..)
 import Html.Attributes exposing (value)
 import Html.Events exposing (onClick)
 import Json.Encode
-import LocalStorage
 
 
 type alias Model =
