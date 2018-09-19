@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const MODE =
-  process.env.npm_lifecycle_event === "prod" ? "production" : "development";
+  process.env.npm_lifecycle_event === "build" ? "production" : "development";
 
 module.exports = function(env) {
   return {
