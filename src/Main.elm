@@ -2,7 +2,7 @@ port module Main exposing (main)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (value)
+import Html.Attributes exposing (class, style, value)
 import Html.Events exposing (onClick)
 import Json.Encode
 
@@ -68,9 +68,11 @@ type Msg
 view : Model -> Browser.Document Msg
 view model =
     { body =
-        [ h1 [] [ text model.clockReading ]
-        , h2 [] [ "elm-conf is " ++ model.daysUntil ++ "!!!" |> text ]
-        , localeButtons
+        [ div [ class "text-center" ]
+            [ localeButtons
+            , h1 [] [ text model.clockReading ]
+            , h2 [] [ "elm-conf is " ++ model.daysUntil ++ "!!!" |> text ]
+            ]
         ]
     , title = "elm-typescript-interop demo"
     }
@@ -89,7 +91,13 @@ localeButtons =
 
 localeButton : Locale -> Html Msg
 localeButton locale =
-    button [ Html.Events.onClick (SetLocale locale) ] [ locale |> Debug.toString |> text ]
+    button
+        [ class "btn btn-primary"
+        , style "margin-top" "20px"
+        , style "margin-bottom" "20px"
+        , Html.Events.onClick (SetLocale locale)
+        ]
+        [ locale |> Debug.toString |> text ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
