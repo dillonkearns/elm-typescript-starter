@@ -92,7 +92,7 @@ localeButtons =
 localeButton : Locale -> Html Msg
 localeButton locale =
     button
-        [ class "btn btn-primary"
+        [ class "btn-lg btn-primary"
         , style "margin-top" "20px"
         , style "margin-bottom" "20px"
         , Html.Events.onClick (SetLocale locale)
