@@ -1,18 +1,18 @@
 import { Elm } from "./src/Main";
 import * as moment from "moment";
-// (<any>window).moment = moment;
 
 document.addEventListener("DOMContentLoaded", function() {
   const app = Elm.Main.init({ flags: timeUntilElmConf() });
+  const sendClockReading = () => {
+    app.ports.newClockReading.send(clockReading());
+  };
 
   app.ports.setLocale.subscribe(newLocale => {
     moment.locale(newLocale);
+    sendClockReading();
   });
 
-  setInterval(() => {
-    console.log("sending", clockReading());
-    app.ports.newClockReading.send(clockReading());
-  }, 1000);
+  setInterval(sendClockReading, 1000);
 });
 
 function timeUntilElmConf() {
@@ -24,5 +24,5 @@ moment()
   .fromNow();
 
 function clockReading() {
-  return moment().format("LTS");
+  return moment().format("LL LTS");
 }

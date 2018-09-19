@@ -24,26 +24,30 @@ type alias Flags =
 
 
 type Locale
-    = En
+    = English
     | Es
-    | No
-    | Bn
+    | Norwegian
+    | Bengali
+    | Farsee
 
 
 localeToString : Locale -> String
 localeToString locale =
     case locale of
-        En ->
+        English ->
             "en-us"
 
         Es ->
             "es"
 
-        No ->
-            "no"
+        Norwegian ->
+            "nb"
 
-        Bn ->
+        Bengali ->
             "bn"
+
+        Farsee ->
+            "fa"
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -51,23 +55,41 @@ init flags =
     ( { daysUntil = flags
       , clockReading = ""
       }
-    , Bn |> localeToString |> setLocale
+    , setLocaleCmd English
     )
 
 
 type Msg
     = NoOp
     | NewClockReading String
+    | SetLocale Locale
 
 
 view : Model -> Browser.Document Msg
 view model =
     { body =
-        [ h1 [] [ text ("time: " ++ model.clockReading) ]
+        [ h1 [] [ text model.clockReading ]
         , h2 [] [ "elm-conf is " ++ model.daysUntil ++ "!!!" |> text ]
+        , localeButtons
         ]
     , title = "elm-typescript-interop demo"
     }
+
+
+localeButtons =
+    div []
+        ([ English
+         , Norwegian
+         , Bengali
+         , Farsee
+         ]
+            |> List.map localeButton
+        )
+
+
+localeButton : Locale -> Html Msg
+localeButton locale =
+    button [ Html.Events.onClick (SetLocale locale) ] [ locale |> Debug.toString |> text ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -78,6 +100,14 @@ update msg model =
 
         NewClockReading clockReading ->
             ( { model | clockReading = clockReading }, Cmd.none )
+
+        SetLocale locale ->
+            ( model, setLocaleCmd locale )
+
+
+setLocaleCmd : Locale -> Cmd msg
+setLocaleCmd locale =
+    locale |> localeToString |> setLocale
 
 
 subscriptions : Model -> Sub Msg
