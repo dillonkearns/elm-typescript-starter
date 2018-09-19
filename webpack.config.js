@@ -5,13 +5,22 @@ const MODE =
 
 module.exports = function(env) {
   return {
+    mode: MODE,
     entry: "./index.ts",
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "bundle.js"
     },
     plugins:
-      MODE === "development" ? [new webpack.HotModuleReplacementPlugin()] : [],
+      MODE === "development"
+        ? [
+            // Suggested for hot-loading
+            new webpack.NamedModulesPlugin(),
+            // Prevents compilation errors causing the hot loader to lose state
+            new webpack.NoEmitOnErrorsPlugin(),
+            new webpack.HotModuleReplacementPlugin()
+          ]
+        : [],
     module: {
       rules: [
         {
@@ -37,9 +46,8 @@ module.exports = function(env) {
     resolve: {
       extensions: [".js", ".ts", ".elm"]
     },
-    devServer: {
+    serve: {
       inline: true,
-      hot: true,
       stats: "errors-only"
     }
   };

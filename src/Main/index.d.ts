@@ -12,9 +12,6 @@ export namespace Elm {
         reply: {
           send(data: number): void
         }
-        jsonPort: {
-          subscribe(callback: (data: unknown) => void): void
-        }
       };
     }
     export function init(options: {
