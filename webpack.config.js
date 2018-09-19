@@ -17,8 +17,7 @@ module.exports = function(env) {
             // Suggested for hot-loading
             new webpack.NamedModulesPlugin(),
             // Prevents compilation errors causing the hot loader to lose state
-            new webpack.NoEmitOnErrorsPlugin(),
-            new webpack.HotModuleReplacementPlugin()
+            new webpack.NoEmitOnErrorsPlugin()
           ]
         : [],
     module: {
