@@ -7,20 +7,13 @@ import Html.Events exposing (onClick)
 import Json.Encode
 
 
-port newClockReading : (String -> msg) -> Sub msg
-
-
-port setLocale : String -> Cmd msg
-
-
 type alias Model =
-    { daysUntil : String
-    , clockReading : String
+    { clockReading : String
     }
 
 
 type alias Flags =
-    String
+    ()
 
 
 type Locale
@@ -28,7 +21,7 @@ type Locale
     | Es
     | Norwegian
     | Bengali
-    | Farsee
+    | Farsi
 
 
 localeToString : Locale -> String
@@ -46,22 +39,19 @@ localeToString locale =
         Bengali ->
             "bn"
 
-        Farsee ->
+        Farsi ->
             "fa"
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { daysUntil = flags
-      , clockReading = ""
-      }
-    , setLocaleCmd English
+    ( { clockReading = "I'm not sure what time it is!" }
+    , Cmd.none
     )
 
 
 type Msg
     = NoOp
-    | NewClockReading String
     | SetLocale Locale
 
 
@@ -71,7 +61,6 @@ view model =
         [ div [ class "text-center" ]
             [ localeButtons
             , h1 [] [ text model.clockReading ]
-            , h2 [] [ "elm-conf is " ++ model.daysUntil ++ "!!!" |> text ]
             ]
         ]
     , title = "elm-typescript-interop demo"
@@ -83,7 +72,7 @@ localeButtons =
         ([ English
          , Norwegian
          , Bengali
-         , Farsee
+         , Farsi
          ]
             |> List.map localeButton
         )
@@ -106,9 +95,6 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        NewClockReading clockReading ->
-            ( { model | clockReading = clockReading }, Cmd.none )
-
         SetLocale locale ->
             ( model, setLocaleCmd locale )
 
@@ -118,9 +104,13 @@ setLocaleCmd locale =
     locale |> localeToString |> setLocale
 
 
+setLocale something =
+    Cmd.none
+
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    newClockReading NewClockReading
+    Sub.none
 
 
 main : Program Flags Model Msg
