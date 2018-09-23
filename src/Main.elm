@@ -5,6 +5,10 @@ import Html exposing (..)
 import Html.Attributes exposing (class, style, value)
 import Html.Events exposing (onClick)
 import Json.Encode
+import Locale exposing (Locale)
+
+
+port timeChanged : (String -> msg) -> Sub msg
 
 
 type alias Model =
@@ -13,39 +17,12 @@ type alias Model =
 
 
 type alias Flags =
-    ()
-
-
-type Locale
-    = English
-    | Es
-    | Norwegian
-    | Bengali
-    | Farsi
-
-
-localeToString : Locale -> String
-localeToString locale =
-    case locale of
-        English ->
-            "en-us"
-
-        Es ->
-            "es"
-
-        Norwegian ->
-            "nb"
-
-        Bengali ->
-            "bn"
-
-        Farsi ->
-            "fa"
+    String
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { clockReading = "I'm not sure what time it is!" }
+    ( { clockReading = flags }
     , Cmd.none
     )
 
@@ -53,6 +30,7 @@ init flags =
 type Msg
     = NoOp
     | SetLocale Locale
+    | TimeChanged String
 
 
 view : Model -> Browser.Document Msg
@@ -69,22 +47,22 @@ view model =
 
 localeButtons =
     div []
-        ([ English
-         , Norwegian
-         , Bengali
-         , Farsi
+        ([ Locale.English
+         , Locale.Norwegian
+         , Locale.Bengali
+         , Locale.Farsi
          ]
-            |> List.map localeButton
+            |> List.map (localeButton SetLocale)
         )
 
 
-localeButton : Locale -> Html Msg
-localeButton locale =
+localeButton : (Locale -> msg) -> Locale -> Html msg
+localeButton setLocaleMsg locale =
     button
         [ class "btn-lg btn-primary"
         , style "margin-top" "20px"
         , style "margin-bottom" "20px"
-        , Html.Events.onClick (SetLocale locale)
+        , Html.Events.onClick (setLocaleMsg locale)
         ]
         [ locale |> Debug.toString |> text ]
 
@@ -98,10 +76,13 @@ update msg model =
         SetLocale locale ->
             ( model, setLocaleCmd locale )
 
+        TimeChanged newTime ->
+            ( { model | clockReading = newTime }, Cmd.none )
+
 
 setLocaleCmd : Locale -> Cmd msg
 setLocaleCmd locale =
-    locale |> localeToString |> setLocale
+    locale |> Locale.toString |> setLocale
 
 
 setLocale something =
@@ -110,7 +91,7 @@ setLocale something =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    timeChanged TimeChanged
 
 
 main : Program Flags Model Msg

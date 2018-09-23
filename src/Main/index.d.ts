@@ -6,12 +6,14 @@ export namespace Elm {
   namespace Main {
     export interface App {
       ports: {
-        
+        timeChanged: {
+          send(data: string): void
+        }
       };
     }
     export function init(options: {
       node?: HTMLElement | null;
-      flags: null;
+      flags: string;
     }): Elm.Main.App;
   }
 }
