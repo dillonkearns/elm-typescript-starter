@@ -23,7 +23,8 @@
   "scripts": {
     "start": "elm-typescript-interop && webpack-serve --open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "elm-typescript-interop && webpack -p"
+    "build": "elm-typescript-interop && webpack -p",
+    "watch": "fswatch -0 src/Main.elm |  xargs -0 -n 1 -I {} npx elm-typescript-interop"
   },
   "keywords": [],
   "author": "",
