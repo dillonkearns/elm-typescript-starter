@@ -2,16 +2,28 @@ import { Elm } from "./src/Main";
 import * as moment from "moment";
 
 document.addEventListener("DOMContentLoaded", function() {
-  const app = Elm.Main.init({ flags: clockReading() });
+  const app = Elm.Main.init({ flags: null });
   function showClockReading() {
     console.log(clockReading());
-    // app.ports.newClockReading.send(clockReading());
-    app.ports.timeChanged.send(clockReading());
   }
 
+  /*
+
+    Boilerplate
+
+
+
+
+
+
+
+
+
+
+  */
   function setLocale(newLocale: string) {
     moment.locale(newLocale);
-    // showClockReading();
+    showClockReading();
   }
 
   function clockReading() {

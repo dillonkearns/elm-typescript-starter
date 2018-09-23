@@ -5,7 +5,14 @@ import Locale exposing (Locale)
 import View
 
 
-port timeChanged : (String -> msg) -> Sub msg
+setLocale : String -> Cmd msg
+setLocale localeString =
+    Cmd.none
+
+
+timeChanged : (String -> msg) -> Sub msg
+timeChanged msgConstructor =
+    Sub.none
 
 
 type alias Model =
@@ -13,12 +20,12 @@ type alias Model =
 
 
 type alias Flags =
-    String
+    ()
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { clockReading = flags }
+    ( { clockReading = "I'm not sure what time it is!" }
     , Cmd.none
     )
 
@@ -45,10 +52,6 @@ update msg model =
 setLocaleCmd : Locale -> Cmd msg
 setLocaleCmd locale =
     locale |> Locale.toString |> setLocale
-
-
-setLocale something =
-    Cmd.none
 
 
 subscriptions : Model -> Sub Msg
