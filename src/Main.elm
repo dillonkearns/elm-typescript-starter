@@ -16,7 +16,7 @@ timeChanged msgConstructor =
 
 
 type alias Model =
-    { clockReading : String }
+    { localizedTime : String }
 
 
 type alias Flags =
@@ -25,7 +25,7 @@ type alias Flags =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { clockReading = "I'm not sure what time it is!" }
+    ( { localizedTime = "I'm not sure what time it is!" }
     , Cmd.none
     )
 
@@ -46,7 +46,7 @@ update msg model =
             ( model, setLocaleCmd locale )
 
         TimeChanged newTime ->
-            ( { model | clockReading = newTime }, Cmd.none )
+            ( { model | localizedTime = newTime }, Cmd.none )
 
 
 setLocaleCmd : Locale -> Cmd msg

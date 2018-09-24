@@ -9,13 +9,13 @@ import Locale exposing (Locale)
 
 view :
     (Locale -> msg)
-    -> { model | clockReading : String }
+    -> { model | localizedTime : String }
     -> Browser.Document msg
 view setLocaleMsg model =
     { body =
         [ div [ class "text-center" ]
             [ localeButtons setLocaleMsg
-            , h1 [] [ text model.clockReading ]
+            , h1 [] [ text model.localizedTime ]
             ]
         ]
     , title = "elm-typescript-interop demo"
