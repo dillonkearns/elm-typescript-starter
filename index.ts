@@ -2,17 +2,17 @@ import { Elm } from "./src/Main";
 import * as moment from "moment";
 
 const app = Elm.Main.init({ flags: null });
-function showClockReading() {
+function showLocalizedTime() {
   console.log(clockReading());
 }
 
 function setLocale(newLocale: string) {
   moment.locale(newLocale);
-  showClockReading();
+  showLocalizedTime();
 }
 
 function clockReading() {
   return moment().format("LL LTS");
 }
 
-setInterval(showClockReading, 1000);
+setInterval(showLocalizedTime, 1000);
