@@ -6,12 +6,17 @@ export namespace Elm {
   namespace Main {
     export interface App {
       ports: {
-        
+        setLocale: {
+          subscribe(callback: (data: string) => void): void
+        }
+        timeChanged: {
+          send(data: string): void
+        }
       };
     }
     export function init(options: {
       node?: HTMLElement | null;
-      flags: null;
+      flags: { startTime: string };
     }): Elm.Main.App;
   }
 }
