@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const exec = require("child_process").exec;
 const path = require("path");
 const MODE =
   process.env.npm_lifecycle_event === "build" ? "production" : "development";
@@ -14,6 +15,25 @@ module.exports = function(env) {
     plugins:
       MODE === "development"
         ? [
+            // Adapted from https://stackoverflow.com/a/49786887
+            // The `invalid` hook works properly.
+            // Others hooks either didn't fire or created an endless loop.
+            {
+              apply: compiler => {
+                compiler.hooks.invalid.tap(
+                  "Elm-TypeScript-Interop",
+                  compilation => {
+                    exec(
+                      "npx elm-typescript-interop",
+                      (err, stdout, stderr) => {
+                        if (stdout) process.stdout.write(stdout);
+                        if (stderr) process.stderr.write(stderr);
+                      }
+                    );
+                  }
+                );
+              }
+            },
             // Suggested for hot-loading
             new webpack.NamedModulesPlugin(),
             // Prevents compilation errors causing the hot loader to lose state
@@ -39,7 +59,11 @@ module.exports = function(env) {
             }
           ]
         },
-        { test: /\.ts$/, loader: "ts-loader" }
+        {
+          test: /\.ts$/,
+          exclude: path.resolve(__dirname, "src/Main"),
+          loader: "ts-loader"
+        }
       ]
     },
     resolve: {
