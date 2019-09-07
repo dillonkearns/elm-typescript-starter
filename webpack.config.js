@@ -37,7 +37,8 @@ module.exports = function(env) {
             // Suggested for hot-loading
             new webpack.NamedModulesPlugin(),
             // Prevents compilation errors causing the hot loader to lose state
-            new webpack.NoEmitOnErrorsPlugin()
+            new webpack.NoEmitOnErrorsPlugin(),
+            new webpack.WatchIgnorePlugin([/\.d\.ts$/])
           ]
         : [],
     module: {
@@ -72,6 +73,14 @@ module.exports = function(env) {
     serve: {
       inline: true,
       stats: "errors-only"
+    },
+    devServer: {
+      watchOptions: {
+        ignored: [
+          path.resolve(__dirname, "dist"),
+          path.resolve(__dirname, "node_modules")
+        ]
+      }
     }
   };
 };
